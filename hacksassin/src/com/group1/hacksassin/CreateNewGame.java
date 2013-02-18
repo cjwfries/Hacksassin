@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 
-public class CreateProfile extends Activity {
+public class CreateNewGame extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_profile);
+        setContentView(R.layout.activity_create_new_game);
+        
+        //TODO: display players that enter
     }
 
 
@@ -22,10 +24,9 @@ public class CreateProfile extends Activity {
         return true;
     }
     
-    public void onCreateProfileBtnClick(View v)
+    public void onBeginGameBtnClick(View v)
     {
-    	//todo: input sanity check
-    	Intent i = new Intent(CreateProfile.this, MainMenu.class);
+    	Intent i = new Intent(CreateNewGame.this, Target.class);
     	startActivity(i);
     }
     

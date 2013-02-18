@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 
-public class CreateProfile extends Activity {
+public class Target extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_profile);
+        setContentView(R.layout.activity_target);
+        
+        //TODO: display players that enter
     }
 
 
@@ -20,13 +22,6 @@ public class CreateProfile extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.create_profile, menu);
         return true;
-    }
-    
-    public void onCreateProfileBtnClick(View v)
-    {
-    	//todo: input sanity check
-    	Intent i = new Intent(CreateProfile.this, MainMenu.class);
-    	startActivity(i);
     }
     
 }

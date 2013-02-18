@@ -10,34 +10,30 @@
     tools:context=".CreateProfile" >
 
     <TextView
-        android:id="@+id/create_profile_title"
+        android:id="@+id/target_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_profile"
+        android:text="@string/target"
         android:textSize="@dimen/header_text_size" 
         android:textColor="@color/holo_blue"
         android:textStyle="bold"
         android:layout_marginBottom="@dimen/header_margin" />
     
-    <EditText 
-        android:id="@+id/enter_name"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/players_remaining"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/create_profile_title"
-        android:inputType="text"
-        android:hint="@string/create_profile_name_hint"
-        android:textColor="@color/white"
-        android:textColorHint="@color/grey"
-        />
+        android:text="@string/players_remaining"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/player_kills" />
     
-    <Button
-        android:id="@+id/create_profile_btn"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/player_kills"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_btn"
-        android:textColor="@color/white"
+        android:text="@string/player_kills"
         android:layout_alignParentBottom="true"
-        android:onClick="onCreateProfileBtnClick"
-        />
-
+        android:layout_alignParentRight="true" />
+        
+    
 </RelativeLayout>

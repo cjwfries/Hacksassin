@@ -9,35 +9,33 @@
     android:background="@color/black"
     tools:context=".CreateProfile" >
 
-    <TextView
-        android:id="@+id/create_profile_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/create_profile"
-        android:textSize="@dimen/header_text_size" 
-        android:textColor="@color/holo_blue"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/header_margin" />
-    
-    <EditText 
-        android:id="@+id/enter_name"
+    <Button
+        android:id="@+id/create_game_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/create_profile_title"
-        android:inputType="text"
-        android:hint="@string/create_profile_name_hint"
+        android:text="@string/create_game"
         android:textColor="@color/white"
-        android:textColorHint="@color/grey"
+        android:layout_above="@+id/join_game_btn"
+        android:onClick="onCreateGameBtnClick"
         />
     
+	<Button
+	    android:id="@+id/join_game_btn"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="@string/join_game_btn" 
+	    android:textColor="@color/white"
+	    android:layout_above="@+id/edit_profile_btn"
+	    android:onClick="onJoinGameBtnClick"
+	    />
+	   
     <Button
-        android:id="@+id/create_profile_btn"
+        android:id="@+id/edit_profile_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_btn"
+        android:text="@string/edit_profile_btn"
         android:textColor="@color/white"
         android:layout_alignParentBottom="true"
-        android:onClick="onCreateProfileBtnClick"
         />
 
 </RelativeLayout>

@@ -3,6 +3,16 @@
 
     <string name="app_name">Hacksassin</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-
+	<string name="create_profile">Create Profile</string>
+	<string name="create_profile_name_hint">Type your name</string>
+	<string name="create_btn">Create</string>
+	<string name="create_game">Create New Game</string>
+	<string name="join_game_btn">Join Existing Game</string>
+	<string name="edit_profile_btn">Edit Profile</string>
+	<string name="begin_game_text">Tap with all players</string>
+	<string name="begin_game_btn">Begin Game</string>
+	<string name="target">Target</string>
+	<string name="players_remaining">Players Remaining: 0</string>
+	<string name="player_kills">Kills: 0</string>
+	<string name="join_game_text">Tap game host to join in</string>
 </resources>
