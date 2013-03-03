@@ -2,40 +2,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/black"
     tools:context=".CreateProfile" >
+
+    <TextView
+        android:id="@+id/main_menu_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/header_margin"
+        android:text=""
+        android:textColor="@color/holo_blue"
+        android:textSize="@dimen/header_text_size"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/create_game_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_game"
-        android:textColor="@color/white"
         android:layout_above="@+id/join_game_btn"
         android:onClick="onCreateGameBtnClick"
-        />
-    
-	<Button
-	    android:id="@+id/join_game_btn"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/join_game_btn" 
-	    android:textColor="@color/white"
-	    android:layout_above="@+id/edit_profile_btn"
-	    android:onClick="onJoinGameBtnClick"
-	    />
-	   
+        android:text="@string/create_game"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/join_game_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/edit_profile_btn"
+        android:onClick="onJoinGameBtnClick"
+        android:text="@string/join_game_btn"
+        android:textColor="@color/white" />
+
     <Button
         android:id="@+id/edit_profile_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/delete_profile_btn"
         android:text="@string/edit_profile_btn"
-        android:textColor="@color/white"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/delete_profile_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        />
+        android:onClick="onDeleteProfileBtnClick"
+        android:text="@string/delete_profile_btn"
+        android:textColor="@color/white" />
 
 </RelativeLayout>
