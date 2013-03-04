@@ -10,6 +10,7 @@
     tools:context=".CreateProfile" >
 
 	<TextView
+	    android:id="@+id/start_game_text"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:text="@string/begin_game_text"

@@ -34,11 +34,19 @@ public class MainMenu extends Activity {
 
 	public void onCreateGameBtnClick(View v) {
 		Intent i = new Intent(MainMenu.this, CreateNewGame.class);
+		Bundle b = new Bundle();
+		b.putString("name", _playerName);
+		b.putString("type", "host");
+		i.putExtras(b);
 		startActivity(i);
 	}
 
 	public void onJoinGameBtnClick(View v) {
-		Intent i = new Intent(MainMenu.this, JoinGame.class);
+		Intent i = new Intent(MainMenu.this, CreateNewGame.class);
+		Bundle b = new Bundle();
+		b.putString("name", _playerName);
+		b.putString("type", "client");
+		i.putExtras(b);
 		startActivity(i);
 	}
 
