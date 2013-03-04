@@ -19,10 +19,10 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//Main Menu -> Join Game (!isHost) || Create New Game (isHost)
+
 public class CreateNewGame extends Activity {
     private static final String TAG = "CreateNewGame";
-    private boolean mResumed = false;
-    private boolean mWriteMode = false;
     NfcAdapter mNfcAdapter;
     //EditText mNote;
     
@@ -37,6 +37,7 @@ public class CreateNewGame extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_new_game);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         
         Bundle b = getIntent().getExtras();
@@ -45,11 +46,11 @@ public class CreateNewGame extends Activity {
 		{
 			isHost = true;
 		}
-
-        setContentView(R.layout.activity_create_new_game);
-        //findViewById(R.id.write_tag).setOnClickListener(mTagWriter);
-        //mNote = ((EditText) findViewById(R.id.note));
-        //mNote.addTextChangedListener(mTextWatcher);
+		
+		if(!isHost)
+		{
+			setTextBody(getString(R.string.join_game_text));
+		}
 
         // Handle all of our received NFC intents in this activity.
         mNfcPendingIntent = PendingIntent.getActivity(this, 0,
@@ -62,22 +63,13 @@ public class CreateNewGame extends Activity {
         } catch (MalformedMimeTypeException e) { }
         mNdefExchangeFilters = new IntentFilter[] { ndefDetected };
 
-        /*
-        // Intent filters for writing to a tag
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        mWriteTagFilters = new IntentFilter[] { tagDetected };
-        */
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mResumed = true;
         // Sticky notes received from Android
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-            NdefMessage[] messages = getNdefMessages(getIntent());
-            byte[] payload = messages[0].getRecords()[0].getPayload();
-            setTextBody(new String(payload));
             setIntent(new Intent()); // Consume this intent.
         }
         enableNdefExchangeMode();
@@ -86,22 +78,20 @@ public class CreateNewGame extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        mResumed = false;
         mNfcAdapter.disableForegroundNdefPush(this);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         // NDEF exchange mode
-        if (!mWriteMode && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
             NdefMessage[] msgs = getNdefMessages(intent);
-            Toast.makeText(this, new String(msgs[0].getRecords()[0].getPayload()),
+            String received = new String(msgs[0].getRecords()[0].getPayload());
+            Toast.makeText(this, received,
 					Toast.LENGTH_SHORT).show();
+            setTextBody(received);
         }
     }
-
-
-
 
     private void setTextBody(String body) {
         TextView tv = (TextView) findViewById(R.id.start_game_text);
@@ -151,12 +141,6 @@ public class CreateNewGame extends Activity {
         mNfcAdapter.enableForegroundNdefPush(this, getMsgAsNdef(mPlayerName));
         mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mNdefExchangeFilters, null);
     }
-
-    private void disableNdefExchangeMode() {
-        mNfcAdapter.disableForegroundNdefPush(this);
-        mNfcAdapter.disableForegroundDispatch(this);
-    }
-
 
     boolean writeTag(NdefMessage message, Tag tag) {
         int size = message.toByteArray().length;
