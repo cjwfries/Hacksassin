@@ -1,6 +1,8 @@
 package com.group1.hacksassin;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -20,6 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //Main Menu -> Join Game (!isHost) || Create New Game (isHost)
+/* TODO:
+ * host-
+ * - game key
+ * - collect list of players in ArrayList
+ * - display entered players
+ * - begin: send game key and list of players to host
+ * 
+ * client-
+ * - begin: move to target screen
+ * 
+ */
 
 public class CreateNewGame extends Activity {
     private static final String TAG = "CreateNewGame";
@@ -32,6 +45,13 @@ public class CreateNewGame extends Activity {
     PendingIntent mNfcPendingIntent;
     IntentFilter[] mWriteTagFilters;
     IntentFilter[] mNdefExchangeFilters;
+    
+    // h_ prefix for variables only used by host
+    String h_gameKey = "";
+    ArrayList<String> h_players;
+    String h_listPlayers = "Players currently in game:\n";
+    
+    String mMsg;
 
     /** Called when the activity is first created. */
     @Override
@@ -39,6 +59,8 @@ public class CreateNewGame extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_game);
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        
+        
         
         Bundle b = getIntent().getExtras();
 		mPlayerName = b.getString("name");
@@ -50,6 +72,15 @@ public class CreateNewGame extends Activity {
 		if(!isHost)
 		{
 			setTextBody(getString(R.string.join_game_text));
+			mMsg = mPlayerName;
+		}
+		else
+		{
+			h_players = new ArrayList<String>();
+			h_players.add(mPlayerName);
+			UUID id = UUID.randomUUID();
+			h_gameKey = id.toString();
+			mMsg = h_gameKey + ";;;" + mPlayerName;
 		}
 
         // Handle all of our received NFC intents in this activity.
@@ -89,7 +120,19 @@ public class CreateNewGame extends Activity {
             String received = new String(msgs[0].getRecords()[0].getPayload());
             Toast.makeText(this, received,
 					Toast.LENGTH_SHORT).show();
-            setTextBody(received);
+            if(isHost)
+            {
+	            h_players.add(received);
+	            h_listPlayers += received;
+	            h_listPlayers += "\n";
+	            setTextBody(h_listPlayers);
+            }
+            else
+            {
+            	String[] split = received.split(";;;");
+            	setTextBody("Successfully entered in " + split[1] + "'s game");
+            }
+
         }
     }
 
@@ -138,7 +181,7 @@ public class CreateNewGame extends Activity {
     }
 
     private void enableNdefExchangeMode() {
-        mNfcAdapter.enableForegroundNdefPush(this, getMsgAsNdef(mPlayerName));
+        mNfcAdapter.enableForegroundNdefPush(this, getMsgAsNdef(mMsg));
         mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mNdefExchangeFilters, null);
     }
 

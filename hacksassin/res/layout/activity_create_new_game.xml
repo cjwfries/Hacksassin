@@ -17,6 +17,7 @@
 	    android:textColor="@color/white"
 	    android:layout_centerVertical="true"
 	    android:gravity="center"
+	    android:maxLines="40"
 	    />
        
     <Button
