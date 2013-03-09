@@ -7,21 +7,30 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import android.app.Activity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
-public class CreateProfile extends Activity {
+import com.group1.util.HttpClient;
+import com.group1.util.MyActivity;
+
+public class CreateProfile extends MyActivity {
 	final String TAG = "CreateProfile";
 	final int DEFAULT_BUFFER_SIZE = 256;
+	final String URL = "http://hacksassin-logiebear.dotcloud.com/profile/create/";
+
+	String _name;
+	String _password = "test";
+	String _id;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +61,13 @@ public class CreateProfile extends Activity {
 				isr.read(inputBuffer);
 
 				// Transform the chars to a String
-				String name = new String(inputBuffer);
-				name = name.split(";;;")[0];
-				Log.d(TAG, name);
-				
+				String inputStr = new String(inputBuffer);
+				String[] components = inputStr.split(";;;");
+
 				Intent i = new Intent(CreateProfile.this, MainMenu.class);
 				Bundle b = new Bundle();
-				b.putString("name", name);
+				b.putString("name", components[0]);
+				b.putString("id", components[1]);
 				i.putExtras(b);
 				startActivity(i);
 			} catch (IOException e) {
@@ -67,21 +76,19 @@ public class CreateProfile extends Activity {
 			}
 		}
 	}
-/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.create_profile, menu);
-		return true;
-	}
-	*/
+
+	/*
+	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
+	 * menu; this adds items to the action bar if it is present.
+	 * getMenuInflater().inflate(R.menu.create_profile, menu); return true; }
+	 */
 
 	public void onCreateProfileBtnClick(View v) {
 		// todo: input sanity check
 
 		EditText name = (EditText) findViewById(R.id.enter_name);
-		String name_text = name.getText().toString();
-		if (name_text.isEmpty()) {
+		_name = name.getText().toString();
+		if (_name.isEmpty()) {
 			AlertDialog.Builder alert = new AlertDialog.Builder(this);
 			alert.setMessage("Please enter a name.")
 					.setCancelable(false)
@@ -96,6 +103,55 @@ public class CreateProfile extends Activity {
 
 			alertD.show();
 		} else {
+
+			// Check for Internet connection
+			if (!util.isNetworkAvailable(getApplicationContext())) {
+				util.ShowNoNetworkAlert(this);
+			} else {
+				// JSON object to hold the information, which is sent to the
+				// server
+				JSONObject jsonObjSend = new JSONObject();
+
+				try {
+					// Add key/value pairs
+					jsonObjSend.put("username", _name);
+					jsonObjSend.put("password", _password);
+					/*
+					 * // Add a nested JSONObject (e.g. for header information)
+					 * JSONObject header = new JSONObject();
+					 * header.put("deviceType", "Android"); // Device type
+					 * header.put("deviceVersion", "2.0"); // Device OS version
+					 * header.put("language", "es-es"); // Language of the
+					 * Android // client jsonObjSend.put("header", header);
+					 */
+
+					// Output the JSON object we're sending to Logcat:
+					Log.i(TAG, jsonObjSend.toString(2));
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+				// Send the HttpPostRequest and receive a JSONObject in return
+				JSONObject jsonObjRecv = HttpClient.SendHttpPost(URL,
+						jsonObjSend);
+
+				/*
+				 * From here on do whatever you want with your JSONObject, e.g.
+				 * 1) Get the value for a key: jsonObjRecv.get("key"); 2) Get a
+				 * nested JSONObject: jsonObjRecv.getJSONObject("key") 3) Get a
+				 * nested JSONArray: jsonObjRecv.getJSONArray("key")
+				 */
+
+				try {
+					_id = jsonObjRecv.getString("user_id");
+					Log.i(TAG, "ID: " + _id);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
 			try {
 				// catches IOException below
 
@@ -111,7 +167,7 @@ public class CreateProfile extends Activity {
 				OutputStreamWriter osw = new OutputStreamWriter(fOut);
 
 				// Write the string to the file
-				osw.write(name_text + ";;;");
+				osw.write(_name + ";;;" + _id + ";;;");
 
 				/*
 				 * ensure that everything is really written out and close
@@ -122,13 +178,49 @@ public class CreateProfile extends Activity {
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
-			
+
 			Intent i = new Intent(CreateProfile.this, MainMenu.class);
 			Bundle b = new Bundle();
-			b.putString("name", name_text);
+			b.putString("name", _name);
+			b.putString("id", _id);
 			i.putExtras(b);
 			startActivity(i);
 		}
 	}
-
+	/*
+	 * private class DownloadTask extends AsyncTask<String, Void, Object> {
+	 * 
+	 * protected Void doInBackground(final String... args) { // JSON object to
+	 * hold the information, which is sent to the server JSONObject jsonObjSend
+	 * = new JSONObject();
+	 * 
+	 * try { // Add key/value pairs jsonObjSend.put("username", _name);
+	 * jsonObjSend.put("password", _password);
+	 * 
+	 * // Add a nested JSONObject (e.g. for header information) JSONObject
+	 * header = new JSONObject(); header.put("deviceType","Android"); // Device
+	 * type header.put("deviceVersion","2.0"); // Device OS version
+	 * header.put("language", "es-es"); // Language of the Android client
+	 * jsonObjSend.put("header", header);
+	 * 
+	 * // Output the JSON object we're sending to Logcat: Log.i(TAG,
+	 * jsonObjSend.toString(2));
+	 * 
+	 * } catch (JSONException e) { e.printStackTrace(); }
+	 * 
+	 * // Send the HttpPostRequest and receive a JSONObject in return JSONObject
+	 * jsonObjRecv = HttpClient.SendHttpPost(URL, jsonObjSend);
+	 * 
+	 * 
+	 * 
+	 * try { _id = jsonObjRecv.getString("user_id"); Log.i(TAG, "ID: " + _id); }
+	 * catch (JSONException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * return null; }
+	 * 
+	 * protected void onPostExecute(Object result) { }
+	 * 
+	 * }
+	 */
 }
