@@ -32,7 +32,7 @@ public class MainMenu extends MyActivity {
 		_playerName = b.getString("name");
 		_id = b.getString("id");
 		TextView name_tv = (TextView) findViewById(R.id.main_menu_name);
-		name_tv.setText(_playerName);
+		name_tv.setText(_playerName + "/" + _id);
 	}
 
 	@Override

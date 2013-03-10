@@ -32,17 +32,9 @@
         android:id="@+id/join_game_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/edit_profile_btn"
+        android:layout_above="@+id/delete_profile_btn"
         android:onClick="onJoinGameBtnClick"
         android:text="@string/join_game_btn"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/edit_profile_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/delete_profile_btn"
-        android:text="@string/edit_profile_btn"
         android:textColor="@color/white" />
 
     <Button

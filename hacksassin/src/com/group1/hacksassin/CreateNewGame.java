@@ -19,6 +19,7 @@ import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class CreateNewGame extends MyActivity {
 	// EditText mNote;
 
 	private String URL_ADD_PLAYER = "http://hacksassin-logiebear.dotcloud.com/game/";
+	final private String URL_START_GAME = "http://hacksassin-logiebear.dotcloud.com/game/";
 
 	String mPlayerName;
 	boolean isHost = false;
@@ -93,6 +95,8 @@ public class CreateNewGame extends MyActivity {
 			h_players.add(mPlayerName);
 			_gameId = b.getString("gameId");
 			mMsg = _gameId + ";;;" + mPlayerName;
+			
+			setTitleText("Game ID: " + _gameId);
 		}
 
 		// Handle all of our received NFC intents in this activity.
@@ -124,6 +128,44 @@ public class CreateNewGame extends MyActivity {
 	protected void onPause() {
 		super.onPause();
 		mNfcAdapter.disableForegroundNdefPush(this);
+	}
+
+	public void onBeginGameBtnClick(View view) {
+		Intent i = new Intent(CreateNewGame.this, Target.class);
+		Bundle b = new Bundle();
+
+		if (isHost) {
+			// =======================================================
+
+			if (!util.isNetworkAvailable(getApplicationContext())) {
+				util.ShowNoNetworkAlert(this);
+			} else {
+				String objRecv = util.readJSONQuery(URL_START_GAME + _gameId
+						+ "/start/", TAG);
+
+				try {
+					JSONObject jsonRet = new JSONObject(objRecv);
+					if (jsonRet.getString("game_started").equals("false")) {
+						toast("Failed to create game. Try again.");
+						return;
+					}
+					else
+					{
+						toast("Game creation successful");
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			// =======================================================
+
+		}
+
+		b.putString("gameId", _gameId);
+		b.putString("userId", _userId);
+		startActivity(i);
 	}
 
 	@Override
@@ -163,6 +205,7 @@ public class CreateNewGame extends MyActivity {
 			} else {
 				_gameId = split[0];
 				setTextBody("Successfully entered in\n" + split[1] + "'s game");
+				setTitleText("Game ID: " + _gameId);
 			}
 
 		}
@@ -173,6 +216,11 @@ public class CreateNewGame extends MyActivity {
 		tv.setText(body);
 	}
 
+	private void setTitleText(String body) {
+		TextView tv = (TextView) findViewById(R.id.cng_game_id_text);
+		tv.setText(body);
+	}
+	
 	private NdefMessage getMsgAsNdef(String msg) {
 		byte[] textBytes = msg.getBytes();
 		NdefRecord textRecord = new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
