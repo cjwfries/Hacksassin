@@ -165,6 +165,8 @@ public class CreateNewGame extends MyActivity {
 
 		b.putString("gameId", _gameId);
 		b.putString("userId", _userId);
+		b.putString("playerName", mPlayerName);
+		i.putExtras(b);
 		startActivity(i);
 	}
 

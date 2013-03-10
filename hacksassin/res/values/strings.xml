@@ -16,4 +16,6 @@
 	<string name="player_kills">Kills: 0</string>
 	<string name="join_game_text">Tap game host to join in</string>
 	<string name="delete_profile_btn">Delete Profile</string>
+	<string name="kill_mode">Activate Kill Mode</string>
+	<string name="game_status_btn">Refresh Game Status</string>
 </resources>
