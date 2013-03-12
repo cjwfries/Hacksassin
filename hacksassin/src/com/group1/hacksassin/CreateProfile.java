@@ -7,14 +7,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,6 +68,7 @@ public class CreateProfile extends MyActivity {
 					b.putString("id", components[1]);
 					i.putExtras(b);
 					startActivity(i);
+					this.finish();
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -186,6 +185,7 @@ public class CreateProfile extends MyActivity {
 			b.putString("id", _id);
 			i.putExtras(b);
 			startActivity(i);
+			this.finish();
 		}
 	}
 	/*

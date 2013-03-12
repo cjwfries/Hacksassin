@@ -20,6 +20,22 @@
         android:textSize="@dimen/header_text_size"
         android:textStyle="bold" />
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/players_remaining"
+        android:layout_below="@+id/target_title" >
+
+        <TextView
+            android:id="@+id/kill_mode_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text=""
+			android:textSize="72dp"/>
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/players_remaining"
         android:layout_width="wrap_content"

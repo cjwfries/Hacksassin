@@ -54,7 +54,12 @@ public class Target extends MyActivity {
 	final int TIME_AFTER_FAILED_STATUS_UPDATE = 10000; //10 seconds
 	final int COUNTER_INTERVAL = 1000;
 	
+	final int KILL_MODE_COUNTDOWN = 30000;
+	
 	StatusCounter _statusCounter;
+	KillModeCounter _killCounter;
+	
+	TextView _killCounterText;
 
 
 
@@ -64,6 +69,8 @@ public class Target extends MyActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_target);
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		
+		_killCounterText = (TextView) findViewById(R.id.kill_mode_counter);
 		
 		Bundle b = getIntent().getExtras();
 		mPlayerName = b.getString("playerName");
@@ -108,6 +115,7 @@ public class Target extends MyActivity {
 					i.putExtras(b);
 					_statusCounter.cancel();
 					startActivity(i);
+					this.finish();
 					return true;
 				}
 				if (jsonRet.getString("player_count").equals("1") && jsonRet.getString("dead").equals("false"))
@@ -120,6 +128,7 @@ public class Target extends MyActivity {
 					i.putExtras(b);
 					_statusCounter.cancel();
 					startActivity(i);
+					this.finish();
 					return true;
 				}
 				TextView target = (TextView) findViewById(R.id.target_title);
@@ -150,6 +159,8 @@ public class Target extends MyActivity {
 			layout.setBackgroundColor(getResources().getColor(R.color.red));
 			TextView target = (TextView) findViewById(R.id.target_title);
 			target.setTextColor(getResources().getColor(R.color.grey));
+			_killCounter = new KillModeCounter(KILL_MODE_COUNTDOWN, COUNTER_INTERVAL);
+			_killCounter.start();
 		}
 	}
 
@@ -317,6 +328,24 @@ public class Target extends MyActivity {
 			// TODO Auto-generated method stub
 			
 		}
-		
+	}
+	
+	public class KillModeCounter extends CountDownTimer{
+		public KillModeCounter(long millisInFuture, long countDownInterval){
+			super(millisInFuture, countDownInterval);
+		}
+
+		@Override
+		public void onFinish() {
+			_killCounterText.setText("");
+			turnOffKillMode();
+		}
+
+		@Override
+		public void onTick(long arg0) {
+			int secondsRemaining = (int) (arg0 / 1000);
+			_killCounterText.setText(Integer.toString(secondsRemaining));		
+			
+		}
 	}
 }
