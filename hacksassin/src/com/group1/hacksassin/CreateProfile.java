@@ -41,6 +41,7 @@ public class CreateProfile extends MyActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_profile);
 
+		
 		File profileFile = this.getFileStreamPath("profile.txt");
 		if (profileFile.exists()) {
 			try {
@@ -63,7 +64,7 @@ public class CreateProfile extends MyActivity {
 				// Fill the Buffer with data from the file
 
 				isr.read(inputBuffer);
-
+				
 				// Transform the chars to a String
 				String inputStr = new String(inputBuffer);
 				String[] components = inputStr.split(";;;");
@@ -82,6 +83,27 @@ public class CreateProfile extends MyActivity {
 			}
 		}
 	}
+	/*Session.openActiveSession(this, true, new Session.StatusCallback() {
+
+        // callback when session changes state
+        @Override
+        public void call(Session session, SessionState state, Exception exception) {
+          if (session.isOpened()) {
+
+            // make request to the /me API
+            Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+
+              // callback after Graph API response with user object
+              @Override
+              public void onCompleted(GraphUser user, Response response) {
+                if (user != null) {
+                   String inputStr = new String(user.getName());
+                }
+              }
+            });
+          }
+        }
+	});*/
 
 	/*
 	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
