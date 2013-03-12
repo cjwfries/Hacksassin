@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.widget.*;
+
 public class MainMenu extends Activity {
 	String _playerName;
 	
@@ -78,5 +80,6 @@ public class MainMenu extends Activity {
 
 		alertD.show();
 	}
+	
 
 }

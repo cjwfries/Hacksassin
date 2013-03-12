@@ -16,4 +16,5 @@
 	<string name="player_kills">Kills: 0</string>
 	<string name="join_game_text">Tap game host to join in</string>
 	<string name="delete_profile_btn">Delete Profile</string>
+	<string name="app_id">283626111768223</string>
 </resources>
