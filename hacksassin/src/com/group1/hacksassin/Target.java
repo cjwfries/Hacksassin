@@ -76,7 +76,7 @@ public class Target extends MyActivity {
 		mPlayerName = b.getString("playerName");
 		_userId = b.getString("userId");
 		_gameId = b.getString("gameId");
-		mMsg = mPlayerName;
+		mMsg = "not";
 
 		// Handle all of our received NFC intents in this activity.
 		mNfcPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
@@ -154,6 +154,7 @@ public class Target extends MyActivity {
 
 	public void setKillMode(View view) {
 		if (!isKillMode) {
+			mMsg = "kill";
 			isKillMode = true;
 			RelativeLayout layout = (RelativeLayout) findViewById(R.id.target_layout);
 			layout.setBackgroundColor(getResources().getColor(R.color.red));
@@ -165,6 +166,7 @@ public class Target extends MyActivity {
 	}
 
 	protected void turnOffKillMode() {
+		mMsg = "not";
 		isKillMode = false;
 		RelativeLayout layout = (RelativeLayout) findViewById(R.id.target_layout);
 		layout.setBackgroundColor(getResources().getColor(R.color.black));
@@ -199,6 +201,7 @@ public class Target extends MyActivity {
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
 			NdefMessage[] msgs = getNdefMessages(intent);
 			String received = new String(msgs[0].getRecords()[0].getPayload());
+			Log.i(TAG, received);
 			//Toast.makeText(this, received, Toast.LENGTH_SHORT).show();
 			if (isKillMode) {
 				if (!util.isNetworkAvailable(getApplicationContext())) {
@@ -210,14 +213,20 @@ public class Target extends MyActivity {
 
 					getGameStatus();
 				}
-			} else {
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				getGameStatus();
+			} 
+			
+			if(received.equals("kill"))
+			{
+				Intent i = new Intent(Target.this, EndGame.class);
+				Bundle b = new Bundle();
+				b.putString("name", mPlayerName);
+				b.putString("id", _userId);
+				b.putBoolean("victor", false);
+				i.putExtras(b);
+				_statusCounter.cancel();
+				startActivity(i);
+				this.finish();
+				return;
 			}
 
 		}

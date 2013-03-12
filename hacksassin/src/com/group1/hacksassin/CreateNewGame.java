@@ -72,6 +72,8 @@ public class CreateNewGame extends MyActivity {
 	String _userId;
 
 	String mMsg;
+	
+	boolean _canBegin = false;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -131,6 +133,11 @@ public class CreateNewGame extends MyActivity {
 	}
 
 	public void onBeginGameBtnClick(View view) {
+		if(!_canBegin)
+		{
+			return;
+		}
+		
 		Intent i = new Intent(CreateNewGame.this, Target.class);
 		Bundle b = new Bundle();
 
@@ -199,6 +206,7 @@ public class CreateNewGame extends MyActivity {
 							h_listPlayers += split[1];
 							h_listPlayers += "\n";
 							setTextBody(h_listPlayers);
+							_canBegin = true;
 						}
 					}
 
@@ -208,6 +216,7 @@ public class CreateNewGame extends MyActivity {
 				_gameId = split[0];
 				setTextBody("Successfully entered in\n" + split[1] + "'s game");
 				setTitleText("Game ID: " + _gameId);
+				_canBegin = true;
 			}
 
 		}
