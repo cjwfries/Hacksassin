@@ -10,7 +10,7 @@
     tools:context=".CreateProfile" >
 
     <TextView
-        android:id="@+id/main_menu_name"
+        android:id="@+id/end_game_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/header_margin"
@@ -22,42 +22,26 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/create_game_btn"
+        android:layout_above="@+id/return_menu_btn"
         android:layout_below="@+id/main_menu_name" >
 
         <ImageView
+            android:id="@+id/end_game_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/profile" />
+            android:src="@drawable/skull" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/create_game_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/join_game_btn"
-        android:onClick="onCreateGameBtnClick"
-        android:text="@string/create_game"
-        android:textColor="@color/white" />
 
     <Button
-        android:id="@+id/join_game_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/delete_profile_btn"
-        android:onClick="onJoinGameBtnClick"
-        android:text="@string/join_game_btn"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/delete_profile_btn"
+        android:id="@+id/return_menu_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:onClick="onDeleteProfileBtnClick"
-        android:text="@string/delete_profile_btn"
+        android:onClick="onReturnMenuBtnClick"
+        android:text="@string/return_menu_btn"
         android:textColor="@color/white" />
 
 </RelativeLayout>

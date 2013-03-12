@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-import com.group1.util.HttpClient;
 import com.group1.util.MyActivity;
 
 public class MainMenu extends MyActivity {

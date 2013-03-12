@@ -16,6 +16,7 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +49,14 @@ public class Target extends MyActivity {
 	String _targetName = "Target";
 	String _killCount = "0";
 	String _playerCount = "-1";
+	
+	final int TIME_BT_STATUS_UPDATE = 30000; //300000; //300,000 msec = 5 min
+	final int TIME_AFTER_FAILED_STATUS_UPDATE = 10000; //10 seconds
+	final int COUNTER_INTERVAL = 1000;
+	
+	StatusCounter _statusCounter;
+
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -81,6 +90,7 @@ public class Target extends MyActivity {
 
 	// returns whether or not could reach server
 	protected boolean getGameStatus() {
+		toast("Refreshing game status");
 		if (!util.isNetworkAvailable(getApplicationContext())) {
 			util.ShowNoNetworkAlert(this);
 		} else {
@@ -90,8 +100,27 @@ public class Target extends MyActivity {
 			try {
 				JSONObject jsonRet = new JSONObject(objRecv);
 				if (jsonRet.getString("dead").equals("true")) {
-					// TODO: Game over
-					toast("Game Over.");
+					Intent i = new Intent(Target.this, EndGame.class);
+					Bundle b = new Bundle();
+					b.putString("name", mPlayerName);
+					b.putString("id", _userId);
+					b.putBoolean("victor", false);
+					i.putExtras(b);
+					_statusCounter.cancel();
+					startActivity(i);
+					return true;
+				}
+				if (jsonRet.getString("player_count").equals("1") && jsonRet.getString("dead").equals("false"))
+				{
+					Intent i = new Intent(Target.this, EndGame.class);
+					Bundle b = new Bundle();
+					b.putString("name", mPlayerName);
+					b.putString("id", _userId);
+					b.putBoolean("victor", true);
+					i.putExtras(b);
+					_statusCounter.cancel();
+					startActivity(i);
+					return true;
 				}
 				TextView target = (TextView) findViewById(R.id.target_title);
 				target.setText(jsonRet.getString("target_username") + "/"
@@ -101,14 +130,16 @@ public class Target extends MyActivity {
 						+ jsonRet.getString("player_count"));
 				TextView playerKlls = (TextView) findViewById(R.id.player_kills);
 				playerKlls.setText("Kills: " + jsonRet.getString("kill_count"));
-
+				_statusCounter = new StatusCounter(TIME_BT_STATUS_UPDATE, COUNTER_INTERVAL);
+				_statusCounter.start();
 				return true;
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
+		_statusCounter = new StatusCounter(TIME_AFTER_FAILED_STATUS_UPDATE, COUNTER_INTERVAL);
+		_statusCounter.start();
 		return false;
 	}
 
@@ -134,6 +165,7 @@ public class Target extends MyActivity {
 		getGameStatus();
 	}
 
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -268,5 +300,23 @@ public class Target extends MyActivity {
 
 	private void toast(String text) {
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+	}
+	
+	public class StatusCounter extends CountDownTimer{
+		public StatusCounter(long millisInFuture, long countDownInterval){
+			super(millisInFuture, countDownInterval);
+		}
+
+		@Override
+		public void onFinish() {
+			getGameStatus();		
+		}
+
+		@Override
+		public void onTick(long arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 }

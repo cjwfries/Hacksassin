@@ -63,13 +63,14 @@ public class CreateProfile extends MyActivity {
 				// Transform the chars to a String
 				String inputStr = new String(inputBuffer);
 				String[] components = inputStr.split(";;;");
-
-				Intent i = new Intent(CreateProfile.this, MainMenu.class);
-				Bundle b = new Bundle();
-				b.putString("name", components[0]);
-				b.putString("id", components[1]);
-				i.putExtras(b);
-				startActivity(i);
+				if (!components[1].equals("null")) {
+					Intent i = new Intent(CreateProfile.this, MainMenu.class);
+					Bundle b = new Bundle();
+					b.putString("name", components[0]);
+					b.putString("id", components[1]);
+					i.putExtras(b);
+					startActivity(i);
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
