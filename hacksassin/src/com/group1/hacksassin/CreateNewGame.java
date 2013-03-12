@@ -177,7 +177,7 @@ public class CreateNewGame extends MyActivity {
 			NdefMessage[] msgs = getNdefMessages(intent);
 			String received = new String(msgs[0].getRecords()[0].getPayload());
 			String[] split = received.split(";;;");
-			Toast.makeText(this, received, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, received, Toast.LENGTH_SHORT).show();
 			if (isHost) {
 				// =======================================================
 				if (!h_players.contains(split[0])) {

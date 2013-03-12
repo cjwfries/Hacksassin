@@ -2,6 +2,7 @@ package com.group1.hacksassin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
@@ -52,6 +53,22 @@ public class EndGame extends MyActivity {
 		b.putString("id", _id);
 		i.putExtras(b);
 		startActivity(i);
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		//replaces the default 'Back' button action
+		if(keyCode==KeyEvent.KEYCODE_BACK)
+		{
+			Intent i = new Intent(EndGame.this, MainMenu.class);
+			Bundle b = new Bundle();
+			b.putString("name", _playerName);
+			b.putString("id", _id);
+			i.putExtras(b);
+			startActivity(i);
+		}
+		return true;
 	}
 
 }

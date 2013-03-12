@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.group1.util.MyActivity;
 
@@ -21,17 +22,30 @@ public class MainMenu extends MyActivity {
 	final String TAG = "MainMenu";
 	String _playerName;
 	String _id;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
-		
+
 		Bundle b = getIntent().getExtras();
 		_playerName = b.getString("name");
 		_id = b.getString("id");
+		if(_id.equals("null"))
+		{
+			toast("Error- please recreate profile.");
+			File profileFile = MainMenu.this
+					.getFileStreamPath("profile.txt");
+			if (profileFile.exists()) {
+				profileFile.delete();
+			}
+
+			Intent i = new Intent(MainMenu.this,
+					CreateProfile.class);
+			startActivity(i);
+		}
 		TextView name_tv = (TextView) findViewById(R.id.main_menu_name);
-		name_tv.setText(_playerName + "/" + _id);
+		name_tv.setText(_playerName);
 	}
 
 	@Override
@@ -48,16 +62,20 @@ public class MainMenu extends MyActivity {
 		b.putString("name", _playerName);
 		b.putString("type", "host");
 		b.putString("id", _id);
-		
+
 		// =======================================================
-		
+
 		// Check for Internet connection
 		if (!util.isNetworkAvailable(getApplicationContext())) {
 			util.ShowNoNetworkAlert(this);
 		} else {
 			// Send the HttpPostRequest and receive a JSONObject in return
-			String objRecv = util.readJSONQuery(URL + _id + "/creategame/", TAG); 
-
+			String objRecv = util
+					.readJSONQuery(URL + _id + "/creategame/", TAG);
+			if (objRecv.equals("UserId already in a game.")) {
+				toast("You're already in a game.");
+				return;
+			}
 
 			try {
 				JSONObject jsonObjRecv = new JSONObject(objRecv);
@@ -69,9 +87,9 @@ public class MainMenu extends MyActivity {
 				e.printStackTrace();
 			}
 		}
-		
+
 		// =======================================================
-		
+
 		i.putExtras(b);
 		startActivity(i);
 	}
@@ -88,18 +106,19 @@ public class MainMenu extends MyActivity {
 
 	public void onDeleteProfileBtnClick(View v) {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setMessage(
-				"Are you sure you want to delete your profile?")
+		alert.setMessage("Are you sure you want to delete your profile?")
 				.setCancelable(false)
 				.setPositiveButton("Delete",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								File profileFile = MainMenu.this.getFileStreamPath("profile.txt");
+								File profileFile = MainMenu.this
+										.getFileStreamPath("profile.txt");
 								if (profileFile.exists()) {
 									profileFile.delete();
 								}
-								
-								Intent i = new Intent(MainMenu.this, CreateProfile.class);
+
+								Intent i = new Intent(MainMenu.this,
+										CreateProfile.class);
 								startActivity(i);
 
 							}
@@ -113,6 +132,10 @@ public class MainMenu extends MyActivity {
 		AlertDialog alertD = alert.create();
 
 		alertD.show();
+	}
+
+	private void toast(String text) {
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
 
 }

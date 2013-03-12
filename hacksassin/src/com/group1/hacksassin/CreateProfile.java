@@ -11,12 +11,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.group1.util.HttpClient;
 import com.group1.util.MyActivity;
@@ -29,6 +32,8 @@ public class CreateProfile extends MyActivity {
 	String _name;
 	String _password = "test";
 	String _id;
+
+	ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -142,86 +147,62 @@ public class CreateProfile extends MyActivity {
 				 * nested JSONObject: jsonObjRecv.getJSONObject("key") 3) Get a
 				 * nested JSONArray: jsonObjRecv.getJSONArray("key")
 				 */
-
-				try {
-					_id = jsonObjRecv.getString("user_id");
-					Log.i(TAG, "ID: " + _id);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (jsonObjRecv == null) {
+					toast("Player creation failed. Please try a different name.");
+					return;
+				} else {
+					try {
+						_id = jsonObjRecv.getString("user_id");
+						Log.i(TAG, "ID: " + _id);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
+			if (_id.equals("null")) {
+				toast("Player creation failed. Please retry.");
+			} else {
+				try {
+					// catches IOException below
 
-			try {
-				// catches IOException below
+					/*
+					 * We have to use the openFileOutput()-method the
+					 * ActivityContext provides, to protect your file from
+					 * others and This is done for security-reasons. We chose
+					 * MODE_WORLD_READABLE, because we have nothing to hide in
+					 * our file
+					 */
+					FileOutputStream fOut = openFileOutput("profile.txt",
+							MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut);
 
-				/*
-				 * We have to use the openFileOutput()-method the
-				 * ActivityContext provides, to protect your file from others
-				 * and This is done for security-reasons. We chose
-				 * MODE_WORLD_READABLE, because we have nothing to hide in our
-				 * file
-				 */
-				FileOutputStream fOut = openFileOutput("profile.txt",
-						MODE_WORLD_READABLE);
-				OutputStreamWriter osw = new OutputStreamWriter(fOut);
+					// Write the string to the file
+					osw.write(_name + ";;;" + _id + ";;;");
 
-				// Write the string to the file
-				osw.write(_name + ";;;" + _id + ";;;");
+					/*
+					 * ensure that everything is really written out and close
+					 */
+					osw.flush();
+					osw.close();
 
-				/*
-				 * ensure that everything is really written out and close
-				 */
-				osw.flush();
-				osw.close();
+				} catch (IOException ioe) {
+					ioe.printStackTrace();
+				}
 
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
+				Intent i = new Intent(CreateProfile.this, MainMenu.class);
+				Bundle b = new Bundle();
+				b.putString("name", _name);
+				b.putString("id", _id);
+				i.putExtras(b);
+				startActivity(i);
+				this.finish();
 			}
-
-			Intent i = new Intent(CreateProfile.this, MainMenu.class);
-			Bundle b = new Bundle();
-			b.putString("name", _name);
-			b.putString("id", _id);
-			i.putExtras(b);
-			startActivity(i);
-			this.finish();
 		}
 	}
-	/*
-	 * private class DownloadTask extends AsyncTask<String, Void, Object> {
-	 * 
-	 * protected Void doInBackground(final String... args) { // JSON object to
-	 * hold the information, which is sent to the server JSONObject jsonObjSend
-	 * = new JSONObject();
-	 * 
-	 * try { // Add key/value pairs jsonObjSend.put("username", _name);
-	 * jsonObjSend.put("password", _password);
-	 * 
-	 * // Add a nested JSONObject (e.g. for header information) JSONObject
-	 * header = new JSONObject(); header.put("deviceType","Android"); // Device
-	 * type header.put("deviceVersion","2.0"); // Device OS version
-	 * header.put("language", "es-es"); // Language of the Android client
-	 * jsonObjSend.put("header", header);
-	 * 
-	 * // Output the JSON object we're sending to Logcat: Log.i(TAG,
-	 * jsonObjSend.toString(2));
-	 * 
-	 * } catch (JSONException e) { e.printStackTrace(); }
-	 * 
-	 * // Send the HttpPostRequest and receive a JSONObject in return JSONObject
-	 * jsonObjRecv = HttpClient.SendHttpPost(URL, jsonObjSend);
-	 * 
-	 * 
-	 * 
-	 * try { _id = jsonObjRecv.getString("user_id"); Log.i(TAG, "ID: " + _id); }
-	 * catch (JSONException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); }
-	 * 
-	 * return null; }
-	 * 
-	 * protected void onPostExecute(Object result) { }
-	 * 
-	 * }
-	 */
+
+	private void toast(String text) {
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+	}
+
 }

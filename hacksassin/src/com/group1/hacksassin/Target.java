@@ -97,7 +97,7 @@ public class Target extends MyActivity {
 
 	// returns whether or not could reach server
 	protected boolean getGameStatus() {
-		toast("Refreshing game status");
+		//toast("Refreshing game status");
 		if (!util.isNetworkAvailable(getApplicationContext())) {
 			util.ShowNoNetworkAlert(this);
 		} else {
@@ -199,7 +199,7 @@ public class Target extends MyActivity {
 		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
 			NdefMessage[] msgs = getNdefMessages(intent);
 			String received = new String(msgs[0].getRecords()[0].getPayload());
-			Toast.makeText(this, received, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, received, Toast.LENGTH_SHORT).show();
 			if (isKillMode) {
 				if (!util.isNetworkAvailable(getApplicationContext())) {
 					util.ShowNoNetworkAlert(this);

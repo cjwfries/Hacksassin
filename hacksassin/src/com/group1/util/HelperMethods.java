@@ -104,6 +104,7 @@ public class HelperMethods {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Log.i(TAG, builder.toString());
 		return builder.toString();
 	}
 }
