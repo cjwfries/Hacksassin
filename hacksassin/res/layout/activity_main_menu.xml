@@ -27,6 +27,21 @@
         android:layout_marginTop="30dp"
         />
     
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/create_game_btn"
+        android:layout_below="@+id/main_menu_name" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/profile" />
+
+    </RelativeLayout>
+
     <Button
         android:id="@+id/create_game_btn"
         android:layout_width="fill_parent"
@@ -40,17 +55,9 @@
         android:id="@+id/join_game_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/edit_profile_btn"
+        android:layout_above="@+id/delete_profile_btn"
         android:onClick="onJoinGameBtnClick"
         android:text="@string/join_game_btn"
-        android:textColor="@color/white" />
-
-    <Button
-        android:id="@+id/edit_profile_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/delete_profile_btn"
-        android:text="@string/edit_profile_btn"
         android:textColor="@color/white" />
 
     <Button
