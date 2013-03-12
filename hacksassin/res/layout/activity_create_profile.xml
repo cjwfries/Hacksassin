@@ -13,11 +13,11 @@
         android:id="@+id/create_profile_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/header_margin"
         android:text="@string/create_profile"
-        android:textSize="@dimen/header_text_size" 
-        android:textColor="@color/holo_blue"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/header_margin" />
+        android:textColor="@color/BrightRedFF0000"
+        android:textSize="@dimen/header_text_size"
+        android:textStyle="bold" />
     
     <EditText 
         android:id="@+id/enter_name"
@@ -34,10 +34,10 @@
         android:id="@+id/create_profile_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_btn"
-        android:textColor="@color/white"
         android:layout_alignParentBottom="true"
         android:onClick="onCreateProfileBtnClick"
-        />
+        android:text="@string/create_btn"
+        android:textColor="@color/white"
+        android:textColorHint="@color/DarkRed580000" />
 
 </RelativeLayout>

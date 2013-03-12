@@ -4,4 +4,6 @@
     <color name="black">#000000</color>
     <color name="grey">#aaa</color>
     <color name="holo_blue">#33b5e5</color>
+    <color name="BrightRedFF0000">#FF0000</color>
+    <color name="DarkRed580000">#580000</color>
 </resources>

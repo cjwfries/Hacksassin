@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +26,7 @@ public class MainMenu extends Activity {
 		_playerName = b.getString("name");
 		TextView name_tv = (TextView) findViewById(R.id.main_menu_name);
 		name_tv.setText(_playerName);
+		name_tv.setTextColor(Color.parseColor("#FF0000"));;
 	}
 
 	@Override

@@ -13,9 +13,8 @@
 	    android:id="@+id/start_game_text"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:text="@string/join_game_text"
-	    android:textColor="@color/white"
 	    android:gravity="center"
-	    />
+	    android:text="@string/join_game_text"
+	    android:textColor="@color/BrightRedFF0000" />
        
 </RelativeLayout>

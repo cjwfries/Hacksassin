@@ -13,27 +13,28 @@
         android:id="@+id/target_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/header_margin"
         android:text="@string/target"
-        android:textSize="@dimen/header_text_size" 
-        android:textColor="@color/holo_blue"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/header_margin" />
+        android:textColor="@color/BrightRedFF0000"
+        android:textSize="@dimen/header_text_size"
+        android:textStyle="bold" />
     
     <TextView
         android:id="@+id/players_remaining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/players_remaining"
+        android:layout_above="@+id/player_kills"
         android:layout_alignParentRight="true"
-        android:layout_above="@+id/player_kills" />
+        android:text="@string/players_remaining"
+        android:textColor="@color/BrightRedFF0000" />
     
     <TextView
         android:id="@+id/player_kills"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/player_kills"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
-        
+        android:layout_alignParentRight="true"
+        android:text="@string/player_kills"
+        android:textColor="@color/BrightRedFF0000" />
     
 </RelativeLayout>
