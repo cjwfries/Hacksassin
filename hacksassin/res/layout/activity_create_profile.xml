@@ -30,22 +30,14 @@
         android:textColorHint="@color/grey"
         />
     
-    <com.facebook.widget.LoginButton
-        android:id="@+id/authButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        />
-    
     <Button
         android:id="@+id/create_profile_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:onClick="onCreateProfileBtnClick"
         android:text="@string/create_btn"
         android:textColor="@color/white"
-        android:textColorHint="@color/DarkRed580000" />
+        android:layout_alignParentBottom="true"
+        android:onClick="onCreateProfileBtnClick"
+        />
 
 </RelativeLayout>

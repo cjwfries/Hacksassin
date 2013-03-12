@@ -8,14 +8,11 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
-
-import com.facebook.widget.*;
 
 import com.group1.util.MyActivity;
 
@@ -34,10 +31,7 @@ public class MainMenu extends MyActivity {
 		_playerName = b.getString("name");
 		_id = b.getString("id");
 		TextView name_tv = (TextView) findViewById(R.id.main_menu_name);
-
 		name_tv.setText(_playerName + "/" + _id);
-		name_tv.setTextColor(Color.parseColor("#FF0000"));;
-
 	}
 
 	@Override
@@ -120,6 +114,5 @@ public class MainMenu extends MyActivity {
 
 		alertD.show();
 	}
-	
 
 }

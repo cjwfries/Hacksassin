@@ -44,7 +44,6 @@
         android:layout_alignParentRight="true"
         android:text="@string/players_remaining"
         android:textColor="@color/BrightRedFF0000" />
-    
 
     <TextView
         android:id="@+id/player_kills"
@@ -52,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/game_status_btn"
         android:layout_alignParentRight="true"
-        android:text="@string/player_kills" 
+        android:text="@string/player_kills"
         android:textColor="@color/BrightRedFF0000" />
 
     <Button
